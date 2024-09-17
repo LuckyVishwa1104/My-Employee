@@ -1,5 +1,5 @@
-import 'package:application/components/filter_chip_component.dart';
-import 'package:application/components/list_tile_component.dart';
+import 'package:application/components/utility/filter_chip_component.dart';
+import 'package:application/components/utility/list_tile_component.dart';
 import 'package:application/components/navigation/push.dart';
 import 'package:application/components/square_tile_icon.dart';
 import 'package:application/components/utility/drawer/app_drawer.dart';
