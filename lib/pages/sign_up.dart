@@ -1,11 +1,12 @@
 import 'package:application/components/button_components/my_button.dart';
-import 'package:application/components/navigation/push_replacement_named.dart';
+import 'package:application/components/navigation/push_replacement.dart';
 import 'package:application/components/registration/registration_footer.dart';
 import 'package:application/components/registration/secondary_method.dart';
 import 'package:application/components/static_components/or_continue_with.dart';
 import 'package:application/components/text_components/input_text.dart';
 import 'package:application/components/text_components/password_text_field.dart';
 import 'package:application/config.dart';
+import 'package:application/pages/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -53,7 +54,7 @@ class _SignUpState extends State<SignUp> {
       var jsonResponse = jsonDecode(response.body);
 
       if (jsonResponse['status']) {
-        pushReplacementNamed(context, '/signIn');
+        pushReplacement(context, const SignIn());
       }
     }
     setState(() {
