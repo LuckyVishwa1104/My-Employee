@@ -1,4 +1,6 @@
-const url = "http://192.168.9.212:3000/";
+// https://my-employee-server.vercel.app/ - for remote server
+// http://192.168.9.212:3000/ - for local server
+const url = "https://my-employee-server.vercel.app/";
 
 const registration = '${url}registration';
 
