@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                   : employees.isNotEmpty
                       ? SingleChildScrollView(
                           child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxHeight: 480),
+                            constraints: const BoxConstraints(maxHeight: 490),
                             child: EmployeeList(
                               employees: employees,
                               onEmployeeTap: (employee) {
@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Colors.black,
         unselectedItemColor: Colors.grey,
       ),
     );
