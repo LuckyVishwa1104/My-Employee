@@ -1,9 +1,10 @@
 import 'package:application/components/button_components/custom_text_button.dart';
 import 'package:application/components/button_components/my_button.dart';
-import 'package:application/components/navigation/push_replacement_named.dart';
+import 'package:application/components/navigation/push_replacement.dart';
 import 'package:application/components/text_components/input_text.dart';
 import 'package:application/components/text_components/otp_text_field.dart';
 import 'package:application/components/text_components/password_text_field.dart';
+import 'package:application/pages/sign_in.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -100,9 +101,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               // button for restting the password
               MyButton(
                 buttonText: 'Reset Password',
-                onPressed: () => pushReplacementNamed(
+                onPressed: () => pushReplacement(
                   context,
-                  '/signIn',
+                  const SignIn(),
                 ),
                 isLoading: isLoading,
               ),
