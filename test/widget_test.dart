@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:application/components/text_components/main.dart';
+import 'package:application/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
