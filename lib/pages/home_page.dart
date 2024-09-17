@@ -156,23 +156,18 @@ class _HomePageState extends State<HomePage> {
               child: isLoading
                   ? const Center(child: CircularProgressIndicator(color: Colors.black,))
                   : employees.isNotEmpty
-                      ? SingleChildScrollView(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxHeight: 490),
-                            child: EmployeeList(
-                              employees: employees,
-                              onEmployeeTap: (employee) {
-                                push(
-                                  context,
-                                  EmployeeDetails(
-                                    token: prefs.getString('token')!,
-                                    uId: employee['_id'],
-                                  ),
-                                );
-                              },
+                      ? EmployeeList(
+                        employees: employees,
+                        onEmployeeTap: (employee) {
+                          push(
+                            context,
+                            EmployeeDetails(
+                              token: prefs.getString('token')!,
+                              uId: employee['_id'],
                             ),
-                          ),
-                        )
+                          );
+                        },
+                      )
                       : Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
