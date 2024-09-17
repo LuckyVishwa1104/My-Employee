@@ -196,11 +196,11 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                                       employeeData["_id"],
                                     ),
                                   },
-                              bgColor: Colors.red.shade400),
+                              bgColor: Colors.black),
                           CustomButton(
                             buttonText: 'Update details',
                             onPressed: () => {},
-                            bgColor: Colors.green,
+                            bgColor: Colors.black,
                           )
                         ],
                       ),
