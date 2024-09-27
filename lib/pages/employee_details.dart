@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:application/components/button_components/custom_button.dart';
+import 'package:application/components/navigation/push.dart';
 import 'package:application/components/navigation/push_replacement.dart';
 import 'package:application/components/profile_image.dart';
 import 'package:application/components/square_tile_icon.dart';
 import 'package:application/components/static_components/or_continue_with.dart';
 import 'package:application/components/text_components/bold_thin.dart';
 import 'package:application/pages/home_page.dart';
+import 'package:application/pages/update_details.dart';
 import 'package:http/http.dart' as http;
-import 'package:application/config.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,42 +46,26 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
     setState(() {
       isLoading = true;
     });
-    try {
-      final reqBody = {"_id": _uId};
-      var response = await http.post(
-        Uri.parse(singleEmployee),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody),
-      );
 
-      final jsonResponse = jsonDecode(response.body);
+    final response = await http.get(Uri.parse(
+        'https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/$_uId'));
 
-      if (jsonResponse['status'] == true) {
-        setState(() {
-          employeeData = jsonResponse['success'];
-          isLoading = false;
-        });
-      } else {
-        print("Failed to load employee data");
-      }
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      print("Error fetching employee details: $e");
-    }
+    final data = jsonDecode(response.body);
+
+    setState(() {
+      employeeData = data;
+      isLoading = false;
+    });
   }
 
-  void deleteEmployee_(id) async {
-    var reqBody = {"_id": id};
-
-    var response = await http.post(Uri.parse(deleteEmployee),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody));
+  void deleteEmployee_() async {
+    var response = await http.delete(Uri.parse('https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee/$_uId'));
 
     var jsonResponse = jsonDecode(response.body);
 
-    if (jsonResponse['status']) {
+    print(jsonResponse);
+
+    if (jsonResponse.isNotEmpty) {
       Navigator.of(context).popUntil((route) => route.isFirst);
       pushReplacement(context, HomePage(token: prefs.getString('token')!));
     }
@@ -95,7 +80,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
       ),
       body: isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: Colors.black,),
             )
           : Container(
               padding: const EdgeInsets.all(8),
@@ -108,8 +93,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                   children: [
                     ProfileImage(
                       type: true,
-                      imageUrl:
-                          employeeData["objectUrl"],
+                      imageUrl: employeeData["avatar"],
                       selectedImage: null,
                       radius: 80,
                     ),
@@ -117,7 +101,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                       height: 5,
                     ),
                     Text(
-                      employeeData['employeeName'],
+                      employeeData['name'],
                       style: const TextStyle(fontSize: 23),
                     ),
                     const SizedBox(
@@ -159,7 +143,7 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: SizedBox(
-                        height: 160,
+                        // height: 160,
                         width: double.infinity,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,16 +151,25 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                           children: [
                             BoldThin(
                                 primaryText: 'Emp Id. - ',
-                                secondaryText: employeeData["employeeId"]),
+                                secondaryText: employeeData["id"]),
                             BoldThin(
                                 primaryText: 'Email - ',
-                                secondaryText: employeeData["employeeEmail"]),
+                                secondaryText: employeeData["emailId"]),
                             BoldThin(
                                 primaryText: 'Contact - ',
-                                secondaryText: employeeData["employeeNumber"]),
+                                secondaryText: employeeData["mobile"]),
                             BoldThin(
-                                primaryText: 'Address - ',
-                                secondaryText: employeeData["employeeAddress"]),
+                              primaryText: 'District - ',
+                              secondaryText: employeeData["district"],
+                            ),
+                            BoldThin(
+                              primaryText: 'State - ',
+                              secondaryText: employeeData["state"],
+                            ),
+                            BoldThin(
+                              primaryText: 'Country - ',
+                              secondaryText: employeeData["country"],
+                            ),
                           ],
                         ),
                       ),
@@ -192,14 +185,14 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                           CustomButton(
                               buttonText: 'Delete employee',
                               onPressed: () => {
-                                    deleteEmployee_(
-                                      employeeData["_id"],
-                                    ),
+                                    deleteEmployee_(),
                                   },
                               bgColor: Colors.black),
                           CustomButton(
                             buttonText: 'Update details',
-                            onPressed: () => {},
+                            onPressed: () => {
+                              push(context, UpdateDetails(uId: _uId),),
+                            },
                             bgColor: Colors.black,
                           )
                         ],
