@@ -4,10 +4,8 @@ import 'package:application/components/navigation/push_replacement.dart';
 import 'package:application/components/profile_image.dart';
 import 'package:application/components/square_tile_icon.dart';
 import 'package:application/components/static_components/or_continue_with.dart';
-import 'package:application/components/text_components/drawer_text.dart';
 import 'package:application/components/text_components/input_text.dart';
 import 'package:application/components/text_components/numeric_text.dart';
-import 'package:application/config.dart';
 import 'package:application/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,6 +30,8 @@ class _AddEmployeeState extends State<AddEmployee> {
   TextEditingController employeeNumberController = TextEditingController();
   TextEditingController employeeAddressController = TextEditingController();
   TextEditingController optionController = TextEditingController();
+  TextEditingController districtController = TextEditingController();
+  bool _isNotValid6 = false;
   bool _isNotValid1 = false;
   bool _isNotValid2 = false;
   bool _isNotValid3 = false;
@@ -102,28 +102,28 @@ class _AddEmployeeState extends State<AddEmployee> {
     initSharedPref();
   }
 
-  void uploadPhoto_() async {
-    setState(() {
-      isLoading = true;
-    });
-    var reqBody = {"email": email, "type": type};
+  // void uploadPhoto_() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   var reqBody = {"email": email, "type": type};
 
-    var response = await http.post(Uri.parse(uploadPhoto),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody));
+  //   var response = await http.post(Uri.parse(uploadPhoto),
+  //       headers: {"Content-Type": "application/json"},
+  //       body: jsonEncode(reqBody));
 
-    var jsonResponse = jsonDecode(response.body);
+  //   var jsonResponse = jsonDecode(response.body);
 
-    signedUrl = jsonResponse["success"][0];
-    photoKey = jsonResponse["success"][1];
-    uploadS3_();
-    addEmployee();
-  }
+  //   signedUrl = jsonResponse["success"][0];
+  //   photoKey = jsonResponse["success"][1];
+  //   uploadS3_();
+  //   addEmployee();
+  // }
 
-  void uploadS3_() async {
-    await http.put(Uri.parse(signedUrl),
-        headers: {"Content-Type": "image/$type"}, body: imageData);
-  }
+  // void uploadS3_() async {
+  //   await http.put(Uri.parse(signedUrl),
+  //       headers: {"Content-Type": "image/$type"}, body: imageData);
+  // }
 
   void addEmployee() async {
     setState(() {
@@ -132,32 +132,36 @@ class _AddEmployeeState extends State<AddEmployee> {
       _isNotValid3 = employeeEmailController.text.isEmpty;
       _isNotValid4 = employeeNumberController.text.isEmpty;
       _isNotValid5 = employeeAddressController.text.isEmpty;
+      _isNotValid6 = districtController.text.isEmpty;
+      isLoading = true;
     });
 
     if (employeeIdController.text.isNotEmpty &&
-        optionController.text.isNotEmpty &&
         employeeNameController.text.isNotEmpty &&
         employeeEmailController.text.isNotEmpty &&
         employeeNumberController.text.isNotEmpty &&
-        employeeAddressController.text.isNotEmpty) {
+        employeeAddressController.text.isNotEmpty &&
+        districtController.text.isNotEmpty) {
       var reqBody = {
-        "userId": uId,
-        "employeeImage": photoKey,
-        "employeeId": employeeIdController.text,
-        "position": optionController.text,
-        "employeeName": employeeNameController.text,
-        "employeeEmail": employeeEmailController.text,
-        "employeeNumber": employeeNumberController.text,
-        "employeeAddress": employeeAddressController.text
+        "name": employeeNameController.text,
+        "avatar": imageData,
+        "emailId": employeeEmailController.text,
+        "mobile": employeeNumberController.text,
+        "country": employeeAddressController.text,
+        "state": employeeIdController.text,
+        "district": districtController.text,
       };
 
-      var response = await http.post(Uri.parse(addEmployeeDetails),
+      var response = await http.post(
+          Uri.parse(
+              'https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee'),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(reqBody));
 
       var jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
 
-      if (jsonResponse['status']) {
+      if (jsonResponse.isNotEmpty) {
         Navigator.of(context).popUntil((route) => route.isFirst);
         pushReplacement(
             context,
@@ -187,7 +191,9 @@ class _AddEmployeeState extends State<AddEmployee> {
               ),
               child: isLoading
                   ? const Center(
-                      child: CircularProgressIndicator(color: Colors.blue,),
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
                     )
                   : Center(
                       child: SingleChildScrollView(
@@ -234,26 +240,6 @@ class _AddEmployeeState extends State<AddEmployee> {
                               const SizedBox(
                                 height: 15,
                               ),
-                              NumericText(
-                                hintText: 'Employee Id',
-                                existance: _isNotValid1,
-                                controller: employeeIdController,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              DrawerText(
-                                hintText: 'Select Position',
-                                options: const [
-                                  'Intern',
-                                  'Junior Developer',
-                                  'Senior Developer',
-                                ],
-                                controller: optionController,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
                               InputTextField(
                                 hintText: 'Name',
                                 existance: _isNotValid2,
@@ -279,9 +265,25 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 height: 20,
                               ),
                               InputTextField(
-                                hintText: 'Address',
+                                hintText: 'Country',
                                 existance: _isNotValid5,
                                 controller: employeeAddressController,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              InputTextField(
+                                hintText: 'State',
+                                existance: _isNotValid1,
+                                controller: employeeIdController,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              InputTextField(
+                                hintText: 'District',
+                                existance: _isNotValid6,
+                                controller: districtController,
                               ),
                               const SizedBox(
                                 height: 75,
@@ -297,7 +299,7 @@ class _AddEmployeeState extends State<AddEmployee> {
               right: 15,
               child: SquareTileIcon(
                 icon: Icons.add_circle,
-                onPressed: uploadPhoto_,
+                onPressed: addEmployee,
                 labelText: '',
                 clr: Colors.white,
                 bgColor: Colors.black,
