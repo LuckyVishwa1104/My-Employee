@@ -1,6 +1,6 @@
 // https://my-employee-server.vercel.app/ - for remote server
-// http://192.168.9.212:3000/ - for local server
-const url = "https://my-employee-server.vercel.app/";
+// http://192.168.0.108:3000/ - for local server
+const url = "http://192.168.0.107:3000/";
 
 const registration = '${url}registration';
 
@@ -17,3 +17,5 @@ const singleEmployee = '${url}employee';
 const deleteEmployee = '${url}deleteEmployee';
 
 const getUserDetails = '${url}userProfile';
+
+const updateEmployee = '${url}updateEmployee';
