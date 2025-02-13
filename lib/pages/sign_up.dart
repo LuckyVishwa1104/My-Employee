@@ -65,97 +65,99 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Colors.grey.shade100),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Logo
-                Image.asset(
-                  'assets/images/employeeAvatar.png',
-                  width: 65,
-                  height: 65,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // Welcome message
-                Text(
-                  "Welcome, let's get started!",
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 16,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(color: Colors.grey.shade100),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo
+                  Image.asset(
+                    'assets/images/employeeAvatar.png',
+                    width: 65,
+                    height: 65,
+                    fit: BoxFit.cover,
                   ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // Text field for first/last name
-                InputTextField(
-                  controller: userNameController,
-                  hintText: 'Your name',
-                  existance: _isNotValid1,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // Text field for email
-                InputTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  existance: _isNotValid2,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // Text field for password
-                PasswordTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  existance: _isNotValid3,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // Sign up button
-                MyButton(
-                  buttonText: 'Sign Up',
-                  onPressed: userRegistration,
-                  isLoading: isLoading,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // --- or ---
-                const OrContinueWith(
-                  msg: 'Or continue with',
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // Sign up using google/apple
-                const SecondaryMethod(),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // Already have an account - sign In
-                const RegistrationFooter(
-                  greetMessage: 'Already have account?',
-                  buttonText: 'Sign In!',
-                  pageDesignation: '/signIn',
-                ),
-              ],
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // Welcome message
+                  Text(
+                    "Welcome, let's get started!",
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // Text field for first/last name
+                  InputTextField(
+                    controller: userNameController,
+                    hintText: 'Your name',
+                    existance: _isNotValid1,
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // Text field for email
+                  InputTextField(
+                    controller: emailController,
+                    hintText: 'Email',
+                    existance: _isNotValid2,
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // Text field for password
+                  PasswordTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    existance: _isNotValid3,
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // Sign up button
+                  MyButton(
+                    buttonText: 'Sign Up',
+                    onPressed: userRegistration,
+                    isLoading: isLoading,
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // --- or ---
+                  const OrContinueWith(
+                    msg: 'Or continue with',
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // Sign up using google/apple
+                  const SecondaryMethod(),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // Already have an account - sign In
+                  const RegistrationFooter(
+                    greetMessage: 'Already have account?',
+                    buttonText: 'Sign In!',
+                    pageDesignation: '/signIn',
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -76,111 +76,113 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // content of the sign-in page
-                // logo/icon
-                Image.asset(
-                  'assets/images/employeeAvatar.png',
-                  width: 65,
-                  height: 65,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // greeting text
-                Text(
-                  'Welcome, hope you are doing well!',
-                  style: TextStyle(color: Colors.grey[700], fontSize: 16),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // text field for username
-                InputTextField(
-                  controller: emailController,
-                  hintText: 'Username',
-                  existance: _isNotValid2,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // text field for password
-                PasswordTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  existance: _isNotValid3,
-                ),
-                const SizedBox(
-                  height: 5.0,
-                ),
-
-                // forgot password
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25.0,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // content of the sign-in page
+                  // logo/icon
+                  Image.asset(
+                    'assets/images/employeeAvatar.png',
+                    width: 65,
+                    height: 65,
+                    fit: BoxFit.cover,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      CustomTextButton(
-                        buttonText: 'Forgot Password?',
-                        onPressed: () => pushReplacementNamed(
-                          context,
-                          '/forgotPassword',
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // greeting text
+                  Text(
+                    'Welcome, hope you are doing well!',
+                    style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // text field for username
+                  InputTextField(
+                    controller: emailController,
+                    hintText: 'Username',
+                    existance: _isNotValid2,
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // text field for password
+                  PasswordTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    existance: _isNotValid3,
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+        
+                  // forgot password
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CustomTextButton(
+                          buttonText: 'Forgot Password?',
+                          onPressed: () => pushReplacementNamed(
+                            context,
+                            '/forgotPassword',
+                          ),
+                          fontSize: 15.0,
                         ),
-                        fontSize: 15.0,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // sign-in button
-                MyButton(
-                  buttonText: 'Sign In',
-                  onPressed: loginUser,
-                  isLoading: isLoading,
-                ),
-                const SizedBox(
-                  height: 25.0,
-                ),
-
-                // or continue with
-                const OrContinueWith(
-                  msg: 'Or continue with',
-                ),
-
-                const SizedBox(
-                  height: 25.0,
-                ),
-
-                //google/apple login button
-                const SecondaryMethod(),
-                const SizedBox(
-                  height: 20.0,
-                ),
-
-                // sign-up page link
-                const RegistrationFooter(
-                  greetMessage: 'Not a member?',
-                  buttonText: 'Registre Now!',
-                  pageDesignation: '/signUp',
-                ),
-              ],
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // sign-in button
+                  MyButton(
+                    buttonText: 'Sign In',
+                    onPressed: loginUser,
+                    isLoading: isLoading,
+                  ),
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+        
+                  // or continue with
+                  const OrContinueWith(
+                    msg: 'Or continue with',
+                  ),
+        
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+        
+                  //google/apple login button
+                  const SecondaryMethod(),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+        
+                  // sign-up page link
+                  const RegistrationFooter(
+                    greetMessage: 'Not a member?',
+                    buttonText: 'Registre Now!',
+                    pageDesignation: '/signUp',
+                  ),
+                ],
+              ),
             ),
           ),
         ),
