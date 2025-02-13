@@ -97,28 +97,6 @@ class _UpdateDetailsState extends State<UpdateDetails> {
         'employeeAddress': employeeAddressController.text,
       };
 
-      // final Map<String, dynamic> reqBody = {};
-      // if (employeeIdController.text.isNotEmpty) {
-      //   reqBody['employeeId'] = employeeIdController.text;
-      // }
-      // if (employeePositionController.text.isNotEmpty) {
-      //   reqBody['position'] = employeePositionController.text;
-      // }
-      // if (employeeNameController.text.isNotEmpty) {
-      //   reqBody['employeeName'] = employeeNameController.text;
-      // }
-      // if (employeeEmailController.text.isNotEmpty) {
-      //   reqBody['employeeEmail'] = employeeEmailController.text;
-      // }
-      // if (employeeNumberController.text.isNotEmpty) {
-      //   reqBody['employeeNumber'] = employeeNumberController.text;
-      // }
-      // if (employeeAddressController.text.isNotEmpty) {
-      //   reqBody['employeeAddress'] = employeeAddressController.text;
-      // }
-
-      debugPrint(reqBody.toString());
-
       final String apiUrl = '${updateEmployee}?id=${widget.uId}';
 
       final response = await http.patch(
