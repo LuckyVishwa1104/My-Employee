@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SearchEmployee extends StatelessWidget {
   final ValueChanged<String> onSearchChanged;
 
-  const SearchEmployee({Key? key, required this.onSearchChanged}) : super(key: key);
+  const SearchEmployee({super.key, required this.onSearchChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class SearchEmployee extends StatelessWidget {
         ),
         filled: true,
         fillColor: Colors.grey[200],
-        enabledBorder: OutlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),
           borderSide: const BorderSide(
             color: Colors.black,

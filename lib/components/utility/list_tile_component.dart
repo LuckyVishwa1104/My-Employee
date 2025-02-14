@@ -25,7 +25,7 @@ class _EmployeeListState extends State<EmployeeList>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
-    )..repeat(reverse: true);
+    )..repeat(reverse: true); // Repeats the animation for skeleton effect
   }
 
   @override
@@ -41,9 +41,6 @@ class _EmployeeListState extends State<EmployeeList>
       itemCount: widget.employees.length,
       itemBuilder: (context, index) {
         final employee = widget.employees[index];
-        String? avatarUrl = employee['avatar'];
-        bool hasValidAvatar = avatarUrl != null && avatarUrl.isNotEmpty;
-
 
         return GestureDetector(
           onTap: () => widget.onEmployeeTap(employee),
@@ -61,43 +58,40 @@ class _EmployeeListState extends State<EmployeeList>
                 radius: 26,
                 backgroundColor: Colors.grey[300],
                 child: ClipOval(
-                  child: hasValidAvatar
-                      ? CachedNetworkImage(
-                          imageUrl: avatarUrl,
-                          fit: BoxFit.cover,
-                          width: 52,
-                          height: 52,
-                          placeholder: (context, url) => AnimatedBuilder(
-                            animation: _controller,
-                            builder: (context, child) {
-                              return Opacity(
-                                opacity: _controller.value,
-                                child: const Icon(
-                                  Icons.image,
-                                  size: 28,
-                                  color: Colors.grey,
-                                ),
-                              );
-                            },
+                  child: CachedNetworkImage(
+                    imageUrl: employee['objectUrl'],
+                    fit: BoxFit.cover,
+                    width: 52,
+                    height: 52,
+                    placeholder: (context, url) => AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, child) {
+                        return Opacity(
+                          opacity: _controller.value,
+                          child: const Icon(
+                            Icons.image,
+                            size: 28,
+                            color: Colors.grey,
                           ),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.person, size: 28, color: Colors.grey[600]),
-                        )
-                      : Icon(
-                          Icons.person,
-                          size: 28,
-                          color: Colors.grey[600],
-                        ),
+                        );
+                      },
+                    ),
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.person,
+                      size: 28,
+                    ),
+                  ),
                 ),
               ),
             ),
             title: Text(
-              employee['name'],
+              employee['employeeName'],
               style: const TextStyle(
                 fontSize: 17,
               ),
             ),
-            subtitle: Text('ID: ${employee['id']}'),
+            subtitle:
+                Text('ID: ${employee['employeeId']} - ${employee['position']}'),
           ),
         );
       },

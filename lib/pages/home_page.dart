@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
+import 'package:application/config.dart';
 
 class HomePage extends StatefulWidget {
   final String token;
@@ -45,73 +46,49 @@ class _HomePageState extends State<HomePage> {
     prefs = await SharedPreferences.getInstance();
   }
 
-  // Future<void> getEmployeeDetails() async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-
-  //   try {
-  //     List<dynamic> data = await fetchEmployeeDetails(uId,
-  //         position: selectedPosition, filter: searchQuery);
-  //     setState(() {
-  //       employees = data;
-  //     });
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   } finally {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
-
-  // Future<List<dynamic>> fetchEmployeeDetails(String userId,
-  //     {String? position, String? filter}) async {
-  //   try {
-  //     String url = '$bulkEmployeeDetails?userId=$userId';
-  //     if (position != null && position.isNotEmpty) {
-  //       url += '&filter=$position';
-  //     }
-  //     if (filter != null && filter.isNotEmpty) {
-  //       url += '&filter=$filter';
-  //     }
-
-  //     final response = await http.get(Uri.parse(url));
-
-  //     final jsonResponse = jsonDecode(response.body);
-
-  //     if (jsonResponse['status']) {
-  //       return jsonResponse['success'];
-  //     } else {
-  //       throw Exception('Failed to load employee details');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Error fetching data: $e');
-  //   }
-  // }
-
   Future<void> getEmployeeDetails() async {
     setState(() {
       isLoading = true;
     });
 
-    final response = await http.get(
-        Uri.parse(
-            'https://669b3f09276e45187d34eb4e.mockapi.io/api/v1/employee'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': 'true',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-        });
+    try {
+      List<dynamic> data = await fetchEmployeeDetails(uId,
+          position: selectedPosition, filter: searchQuery);
+      setState(() {
+        employees = data;
+      });
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
-    final data = jsonDecode(response.body);
+  Future<List<dynamic>> fetchEmployeeDetails(String userId,
+      {String? position, String? filter}) async {
+    try {
+      String url = '$bulkEmployeeDetails?userId=$userId';
+      if (position != null && position.isNotEmpty) {
+        url += '&filter=$position';
+      }
+      if (filter != null && filter.isNotEmpty) {
+        url += '&filter=$filter';
+      }
 
-    setState(() {
-      employees = data;
-      isLoading = false;
-    });
+      final response = await http.get(Uri.parse(url));
+
+      final jsonResponse = jsonDecode(response.body);
+
+      if (jsonResponse['status']) {
+        return jsonResponse['success'];
+      } else {
+        throw Exception('Failed to load employee details');
+      }
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
   }
 
   @override
@@ -177,23 +154,20 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                      color: Colors.black,
-                    ))
+                  ? const Center(child: CircularProgressIndicator(color: Colors.black,))
                   : employees.isNotEmpty
                       ? EmployeeList(
-                          employees: employees,
-                          onEmployeeTap: (employee) {
-                            push(
-                              context,
-                              EmployeeDetails(
-                                token: prefs.getString('token')!,
-                                uId: employee['id'],
-                              ),
-                            );
-                          },
-                        )
+                        employees: employees,
+                        onEmployeeTap: (employee) {
+                          push(
+                            context,
+                            EmployeeDetails(
+                              token: prefs.getString('token')!,
+                              uId: employee['_id'],
+                            ),
+                          );
+                        },
+                      )
                       : Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -202,9 +176,7 @@ class _HomePageState extends State<HomePage> {
                                 'No employees found',
                                 style: TextStyle(fontSize: 18),
                               ),
-                              const SizedBox(
-                                height: 15,
-                              ),
+                              const SizedBox(height: 15,),
                               SquareTileIcon(
                                   icon: Icons.add_circle,
                                   onPressed: () => {
